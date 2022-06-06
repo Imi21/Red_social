@@ -8,8 +8,8 @@ router.post('/create',authentication,PostController.create)
 router.get('/getall', authentication, PostController.getAll)
 router.delete('/delete/:_id', authentication, PostController.delete)
 router.put('/update/:_id', authentication, PostController.update)
-router.get('/getbytitle/:title', authentication, PostController.getPostByTitle)
-router.get('/getbyid/:_id', authentication, PostController.getById)
+router.get('/getbytitle/:title', PostController.getPostByTitle)
+router.get('/getbyid/:_id', PostController.getById)
 router.put('/like/:_id', authentication, PostController.like)
 
 

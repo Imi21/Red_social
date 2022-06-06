@@ -21,7 +21,7 @@ const UserController = {
       const user = await User.findOne({
         email: req.body.email,
       });
-      const token = jwt.sign({ _id: user._id }, jwt_secret); //creo el token
+      const token = jwt.sign({ _id: user._id }, jwt_secret); 
       if (user.tokens.length > 4) user.tokens.shift();
       user.tokens.push(token);
       await user.save();
@@ -43,6 +43,18 @@ const UserController = {
       });
     }
   },
+
+  async delete(req, res) {
+
+    try {
+          const user = await User.findByIdAndDelete(req.params._id)
+          res.send({ user, message: 'User deleted' })
+          } catch (error) {
+          console.error(error)
+          res.status(500).send({ message: 'there was a problem trying to remove the user' })
+}
+},
+
   async getInfo(req, res) {
     try {
       const user = await User.findById(req.user._id)

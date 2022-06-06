@@ -1,4 +1,5 @@
 const Post = require("../models/Post");
+const User = require("../models/User");
 
 const PostController ={
 
@@ -15,13 +16,17 @@ res.status(500).send({ message: 'Ha habido un problema al crear el Post' })
 },
 
 async getAll(req, res) {
- try {
-       const post = await Post.find().limit(10).
-       res.send(post)
-       } catch (error) {
-       console.error(error);   
-}
-},
+      try {
+        const { page = 1, limit = 10 } = req.query;
+        const posts = await Post.find()
+          .populate("reviews.userId")
+          .limit(limit * 1)
+          .skip((page - 1) * limit);
+        res.send(posts);
+      } catch (error) {
+        console.error(error);
+      }
+    },
 
 async delete(req, res) {
 

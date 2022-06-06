@@ -4,14 +4,9 @@ const ObjectId = mongoose.SchemaTypes.ObjectId;
 const PostSchema = new mongoose.Schema({
 title: String,
 body: String,
-likes: Number,
-userId: {
-
-    type: ObjectId,
-    ref: 'User'
-    },
-
+likes: [{ type: ObjectId }],
 }, { timestamps: true });
+
 
 const Post = mongoose.model('Post', PostSchema);
 
