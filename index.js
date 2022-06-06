@@ -2,16 +2,16 @@ const express = require("express");
 const app = express();
 const PORT = 8080;
 const { dbConnection } = require("./config/config")
+const {typeError} = require('./middlewares/errors')
 
 app.use(express.json())
 dbConnection()
 
 
 app.use('/posts',require('./routes/posts'));
-app.use('/comments',require('./routes/comments'));
 app.use('/users',require('./routes/users'));
 
-// app.use(typeError)
+app.use(typeError)
 
 
 

@@ -72,14 +72,45 @@ async getById(req, res) {
       }
       },
 
-async like(req, res) {
+async insertComment(req, res) {
       try {
-      const post = await Post.findByIdAndUpdate(req.params._id, req.body.likes, { new: true })
-      res.send({ message: "you like this post", post });  
-      } catch (error) {  
+      const post = await Post.findByIdAndUpdate(
+      req.params._id,
+      { $push: { comments: { ...req.body, userId: req.user._id } } },
+      { new: true }
+      );
+      res.send(post);
+      } catch (error) {
       console.error(error);
+      res.status(500).send({ message: "No se ha podido comentar" });
       }
-      }      
-
+      },
+async like(req, res) {
+  try {
+      const existProduct = await Post.findById(req.params._id)
+      if (!existProduct.likes.includes(req.user._id)){
+      const post = await Post.findByIdAndUpdate(
+      req.params._id,
+      { $push: { likes: req.user._id } },
+      { new: true }
+      )
+          
+  await User.findByIdAndUpdate(
+      req.user._id,
+      { $push: { likes: req.params._id } },
+      { new: true }
+      );
+      res.send(post);
+      }
+      else {
+      res.status(400).send({message: 'Solo un ike por usuario'})
+      }
+        
+        
+    } catch (error) {
+      console.error(error);
+      res.status(500).send({ message: "No se ha podido dar like" });
+      }
+      },
 }
 module.exports = PostController;

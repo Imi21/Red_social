@@ -44,27 +44,11 @@ const UserController = {
     }
   },
 
-  async delete(req, res) {
 
-    try {
-          const user = await User.findByIdAndDelete(req.params._id)
-          res.send({ user, message: 'User deleted' })
-          } catch (error) {
-          console.error(error)
-          res.status(500).send({ message: 'there was a problem trying to remove the user' })
-}
-},
 
   async getInfo(req, res) {
     try {
-      const user = await User.findById(req.user._id)
-        .populate("wishList")
-        .populate({
-          path: "orderIds",
-          populate: {
-            path: "productIds",
-          },
-        })
+      const user = await User.findById(req.user._id).populate("postsIds")
      
       res.send(user);
     } catch (error) {

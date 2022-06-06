@@ -23,7 +23,7 @@ const UserSchema = new mongoose.Schema(
       },
       role: String,
       tokens: [],
-      commentIds: [{ type: ObjectId, ref: "Comments" }],
+      postsIds: [{ type: ObjectId, ref: "Post" }],
       likes: [{ type: ObjectId, ref: 'Post' }],
       
     },
