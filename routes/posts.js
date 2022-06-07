@@ -10,8 +10,9 @@ router.delete('/delete/:_id', authentication, PostController.delete)
 router.put('/update/:_id', authentication, PostController.update)
 router.get('/getbytitle/:title', PostController.getPostByTitle)
 router.get('/getbyid/:_id', PostController.getById)
-router.put('/comments/:_id', authentication, PostController.insertComment);
+router.put('/comments/:_id', authentication, PostController.insertComment)
 router.put('/like/:_id', authentication, PostController.like)
+router.put('/dislike/:_id', authentication, PostController.dislike)
 
 
 

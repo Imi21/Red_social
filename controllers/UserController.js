@@ -2,15 +2,28 @@ const User = require("../models/User");
 const jwt = require("jsonwebtoken");
 const { jwt_secret } = require("../config/keys.js");
 const bcrypt = require('bcrypt');
+const transporter = require("../config/nodemailer");
 const saltRounds = 0;
 
 const UserController = {
   async register(req, res, next) {
     try {
       req.body.password = await bcrypt.hash(req.body.password,saltRounds);
-      console.log(req.body.password);
-      const user = await User.create({ ...req.body, role: "user" });
-      res.status(201).send({ message: "Usuario registrado con exito", user });
+      
+      const user = await User.create({ 
+        ...req.body,
+        confirmed: false,
+        role: "user",
+         });
+         await transporter.sendMail({
+
+          to: req.body.email,
+          subject: "Confirme su registro",
+          html: `<h3>Bienvenido, estás a un paso de registrarte </h3>
+          <a href="#"> Click para confirmar tu registro</a>`,
+          });
+
+      res.status(201).send({ message: "Confirma el correo en tu email", user });
     } catch (error) {
       error.origin = 'usuario'
       next(error)

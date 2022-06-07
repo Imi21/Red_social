@@ -19,7 +19,7 @@ async getAll(req, res) {
       try {
         const { page = 1, limit = 10 } = req.query;
         const posts = await Post.find()
-          .populate("reviews.userId")
+          .populate("comments.userId")
           .limit(limit * 1)
           .skip((page - 1) * limit);
         res.send(posts);
@@ -35,7 +35,7 @@ async delete(req, res) {
             res.send({ post, message: 'Post deleted' })
             } catch (error) {
             console.error(error)
-            res.status(500).send({ message: 'there was a problem trying to remove the post' })
+            res.status(500).send({ message: 'no se puede eliminar' })
 }
 },
 
@@ -87,8 +87,8 @@ async insertComment(req, res) {
       },
 async like(req, res) {
   try {
-      const existProduct = await Post.findById(req.params._id)
-      if (!existProduct.likes.includes(req.user._id)){
+      const existPost = await Post.findById(req.params._id)
+      if (!existPost.likes.includes(req.user._id)){
       const post = await Post.findByIdAndUpdate(
       req.params._id,
       { $push: { likes: req.user._id } },
@@ -112,5 +112,37 @@ async like(req, res) {
       res.status(500).send({ message: "No se ha podido dar like" });
       }
       },
+
+      async dislike(req, res) {
+        try {
+            const existPost = await Post.findById(req.params._id)
+            if (existPost.likes.includes(req.user._id)){
+            const post = await Post.findByIdAndUpdate(
+            req.params._id,
+            { $pull: { likes: req.user._id } },
+            { new: true }
+            )
+                
+        await User.findByIdAndUpdate(
+            req.user._id,
+            { $pull: { likes: req.params._id } },
+            { new: true }
+            );
+            res.send(post);
+            }
+            else {
+            res.status(400).send({message: 'No seas troll'})
+            }
+              
+              
+          } catch (error) {
+            console.error(error);
+            res.status(500).send({ message: "no puedes dar dislikes a la gente" });
+            }
+            },
+
+
+
+      
 }
 module.exports = PostController;

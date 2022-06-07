@@ -13,6 +13,10 @@ const UserSchema = new mongoose.Schema(
        unique: true,
         required: [true, "Por favor rellena tu correo"],
       },
+      confirmed: {
+        type: Boolean,
+        // required: [true, "Tienes que confirmar tu correo"],
+      },
       password: {
         type: String,
         required: [true, "Por favor rellena tu contraseña"],
