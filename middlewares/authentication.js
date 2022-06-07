@@ -39,7 +39,7 @@ const isAuthor = async(req, res, next) => {
         next();
     } catch (error) {
         console.error(error)
-        return res.status(500).send({ error, message: 'Ha habido un problema al comprobar la autoría del pedido' })
+        return res.status(500).send({ error, message: 'Ha habido un problema al comprobar la autoría del post' })
     }
 }
 

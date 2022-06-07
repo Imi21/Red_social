@@ -15,6 +15,7 @@ const UserController = {
         confirmed: false,
         role: "user",
          });
+         const url = 'http://localhost:8080/users/confirm/'+ req.body.email
          await transporter.sendMail({
 
           to: req.body.email,
@@ -25,10 +26,25 @@ const UserController = {
 
       res.status(201).send({ message: "Confirma el correo en tu email", user });
     } catch (error) {
-      error.origin = 'usuario'
+      error.origin = 'User';
       next(error)
     }
   },
+
+  async confirm(req,res){
+
+    try {
+    const user = await User.updateOne({confirmed:true},{
+    where:{
+    email: req.params.email
+    }
+    })
+    res.status(201).send( "Usuario confirmado con exito" );
+    } catch (error) {
+    console.error(error)
+    }
+    },
+
   async login(req, res) {
     try {
       const user = await User.findOne({
