@@ -1,6 +1,8 @@
 const express = require("express");
 const app = express();
-const PORT = 8080;
+// const PORT = 8080;
+require("dotenv").config();
+const PORT = process.env.JWT_SECRET || 3001;
 const { dbConnection } = require("./config/config")
 const {typeError} = require('./middlewares/errors')
 

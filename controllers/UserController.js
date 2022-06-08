@@ -24,7 +24,7 @@ const UserController = {
           <a href="#"> Click para confirmar tu registro</a>`,
           });
 
-      res.status(201).send({ message: "Confirma el correo en tu email", user });
+      res.send({ message: "Confirma el correo en tu email", user });
     } catch (error) {
       error.origin = 'User';
       next(error)
